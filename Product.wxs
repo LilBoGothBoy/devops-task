@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"><?define SuperApp_TargetDir=$(var.SuperApp.TargetDir)?>
+	<Product Id="5cdf9b77-1de7-4f80-ad46-95bdf6347591" Name="SuperApp" Language="1033" Version="1.0.0.0" Manufacturer="LilBoGothBoy" UpgradeCode="4f691b97-70cc-47ee-b400-89efaaf343bb">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+	
+		<WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\lic.rtf" />
+		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+		<UIRef Id="WixUI_InstallDir" />
+		
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate EmbedCab="yes" />
+
+		<Feature Id="ProductFeature" Title="SuperApp" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />	
+			<ComponentRef Id="ApplicationShortcut" />
+			<ComponentRef Id="ApplicationShortcutDesktop" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+					<Directory Id="INSTALLFOLDER" Name="SuperApp" />
+				</Directory>
+			<Directory Id="ProgramMenuFolder">
+				<Directory Id="ApplicationProgramsFolder" Name="SuperApplication" />
+			</Directory>
+			<Directory Id="DesktopFolder" Name="Desktop" />
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<DirectoryRef Id="ApplicationProgramsFolder">
+			<Component Id="ApplicationShortcut" Guid="b3ab1f68-3381-47e4-8971-ab8ea6cc79ce">
+				<Shortcut Id="ApplicationStartMenuShortcut" Name="SuperApp" Description="It's My SuperApp" Target="[INSTALLFOLDER]SuperApp" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+				<RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
+				<RegistryValue Root="HKCU" Key="Software\SuperApp" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+			</Component>
+		</DirectoryRef>
+		<DirectoryRef Id="DesktopFolder">
+			<Component Id="ApplicationShortcutDesktop" Guid="e383f4f0-d0b5-4145-ab25-1b315168ad4c">
+				<Shortcut Id="ApplicationDesktopShortcut" Name="SuperApp" Description="It's My SuperApp" Target="[INSTALLFOLDER]SuperApp" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+				<RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
+				<RegistryValue Root="HKCU" Key="Software\SuperApp" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+			</Component>
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+			<!-- <Component Id="ProductComponent"> -->
+				<!-- TODO: Insert files, registry keys, and other resources here. -->
+			<!-- </Component> -->
+			<Component Id="SuperApp.exe" Guid="874e8b0f-aea8-4d27-9803-3a6af0281f68">
+			  <File Id="SuperApp.exe" Name="SuperApp.exe" Source="$(var.SuperApp_TargetDir)SuperApp.exe" />
+			</Component>
+			<Component Id="Colorful.Console.dll" Guid="1af9f7b3-7fb7-4cdc-8e95-5cdb0919f25b">
+			  <File Id="Colorful.Console.dll" Name="Colorful.Console.dll" Source="$(var.SuperApp_TargetDir)Colorful.Console.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
