@@ -1,0 +1,2 @@
+Выполняем этот скрипт из папки с файлом проекта:
+MSBuild.exe SuperApplicationInstaller.wixproj -property:Configuration=Release
