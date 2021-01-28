@@ -22,7 +22,6 @@
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Icon.ico" />
     <Content Include="lic.rtf" />
     <Content Include="SuperApplicationInstaller.wax" />
   </ItemGroup>
